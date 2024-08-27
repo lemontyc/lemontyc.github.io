@@ -19,7 +19,7 @@ I intend to use this (free!) GitHub-hosted website as my personal blog for every
 
 ## Who's the target audience?
 
-Me in the near feature might be the best answer. But, at the end, anyone that finds this and reads it.
+Me in the near feature might be the best answer. But, at the end, anyone who finds this and reads it.
 
 ## CV?
 
