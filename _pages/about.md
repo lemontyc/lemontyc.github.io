@@ -3,13 +3,14 @@ permalink: /about/
 title: "About"
 classes: wide
 ---
+## Who am I?
 
-I’m a robotics engineer who loves solving challenging problems by building and programming robots. I also consider myself an amateur nature.
+I’m a robotics engineer who loves solving challenging problems by building and programming robots. I also consider myself an amateur photographer; mostly nature but currently exploring professional architecture/people head shots.
 
 
 ## What can you find here?
 
-I intend to use this GitHub-hosted website as my personal blog for everything. Stuff you might find (but not limited to):
+I intend to use this (free!) GitHub-hosted website as my personal blog for everything. Stuff you might find (but not limited to):
 * quotes
 * adventures
 * tips
