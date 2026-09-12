@@ -6,6 +6,9 @@
   var root = document.documentElement;
   var still = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+  /* Captured now: document.currentScript is null once callbacks run. */
+  var thisScript = document.currentScript;
+
   /* ── Theme toggle ─────────────────────────────────────────── */
 
   var toggle = document.querySelector('.theme-toggle');
@@ -39,6 +42,30 @@
 
     sync();
   }
+
+  /* ── The rover ────────────────────────────────────────────── */
+  /* Loaded on demand, so nobody pays for an easter egg they have
+     not found. Once launched it follows the reader from page to
+     page, because the flag lives in localStorage. */
+
+  var roverPending = null;
+
+  window.loadRover = function (done) {
+    if (window.roverLaunch) { if (done) done(); return; }
+
+    if (!roverPending) {
+      roverPending = document.createElement('script');
+      roverPending.src = thisScript
+        ? thisScript.src.replace('site.js', 'rover.js')
+        : '/assets/js/rover.js';
+      document.head.appendChild(roverPending);
+    }
+    if (done) roverPending.addEventListener('load', done);
+  };
+
+  var roverWanted = false;
+  try { roverWanted = localStorage.getItem('rover') === '1'; } catch (e) { /* no storage */ }
+  if (roverWanted) window.loadRover();
 
   /* ── Reveal on scroll ─────────────────────────────────────── */
   /* Applied from JS only, so without JavaScript everything is

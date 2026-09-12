@@ -51,6 +51,95 @@
   letter-spacing: 0.02em;
 }
 
+/* Tabs only exist once the script is running. */
+.term__tabs,
+.term__newtab { display: none; }
+.term--live .term__name { display: none; }
+.term--live .term__tabs { display: flex; }
+.term--live .term__newtab { display: block; }
+
+.term__tabs {
+  align-items: center;
+  gap: 0.3rem;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.term__tab {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  max-width: 9rem;
+  padding: 0.18rem 0.45rem;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: none;
+  font: inherit;
+  font-size: 0.82em;
+  color: var(--ink-faint);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.term__tab:hover { color: var(--ink-soft); }
+.term__tab.is-active {
+  background: var(--paper-card);
+  border-color: var(--rule);
+  color: var(--ink);
+}
+
+/* A dot on a tab whose process is still going. */
+.term__tab.is-running .term__tab-name::before {
+  content: "";
+  display: inline-block;
+  width: 0.38rem;
+  height: 0.38rem;
+  margin-right: 0.35rem;
+  border-radius: 50%;
+  background: var(--terminal);
+  vertical-align: 0.05em;
+}
+
+.term__tab-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.term__tab-close {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  background: none;
+  padding: 0 0.1rem;
+  font: inherit;
+  line-height: 1;
+  color: var(--ink-faint);
+  cursor: pointer;
+  border-radius: 2px;
+}
+.term__tab-close:hover { color: var(--accent); }
+
+.term__newtab {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: none;
+  font: inherit;
+  font-size: 0.9em;
+  line-height: 1;
+  color: var(--ink-faint);
+  cursor: pointer;
+}
+.term__newtab:hover:not(:disabled) { color: var(--accent); border-color: var(--accent); }
+.term__newtab:disabled { opacity: 0.35; cursor: default; }
+
 /* Screen ------------------------------------------------------- */
 
 .term__screen {
@@ -74,6 +163,7 @@
   margin: 0;
   padding: 0;
 }
+.term__log[hidden] { display: none; }
 
 .term__line {
   color: var(--ink-soft);
@@ -146,6 +236,11 @@
 @media (prefers-reduced-motion: reduce) {
   .term__form::after { animation: none; }
 }
+
+/* While a foreground process owns the prompt. */
+.term--busy .term__prompt { color: var(--accent); }
+.term--busy .term__input { color: var(--ink-faint); cursor: not-allowed; }
+.term--busy .term__form::after { opacity: 1; }
 
 /* On small screens the card should not eat the whole first screenful. */
 @media (max-width: 40rem) {

@@ -8,7 +8,15 @@
      data-years="{{ term_years }}">
   <div class="term__bar">
     <span class="term__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+
+    {%- comment -%}
+      The tab strip and its button only appear once the script is running;
+      without JavaScript this stays a plain labelled card.
+    {%- endcomment -%}
     <span class="term__name">luis@lemontyc: ~</span>
+    <div class="term__tabs" data-term-tabs role="tablist" aria-label="Terminal tabs"></div>
+    <button class="term__newtab" type="button" data-term-newtab
+            aria-label="Open a new terminal tab" title="new tab">+</button>
   </div>
 
   <div class="term__screen" data-term-screen>

@@ -15,6 +15,7 @@ _sass/_tokens.scss   every colour and size, in one place — start here
 _sass/_base.scss     reset, typography, prose styles for posts
 _sass/_components.scss  masthead, hero, lists, gallery, footer
 _sass/_terminal.scss    the homepage terminal, and scroll reveals
+_sass/_rover.scss       the masthead rover and its mound
 _pages/              about, now, photos, writing, tags, categories, 404
 _posts/              the writing
 ```
@@ -110,8 +111,80 @@ climbing: function () {
 That is the whole API. Bare section names (`writing`, `photos`, `now`,
 `about`) already navigate without being declared.
 
+Tab completes commands and their arguments, up arrow repeats, escape
+clears the line. Tab only gets swallowed when there is something to
+complete, so it never traps keyboard focus in the input.
+
 With JavaScript off, the card degrades to a static panel showing the bio,
 so nothing is lost.
+
+## The rover
+
+```
+> ros2 launch mars_rover rover.launch.py
+```
+
+A small Mars rover then patrols the masthead, driving behind the wordmark
+and the navigation. Three things make it worth the bytes:
+
+**The suspension works.** There is terrain in the header, and the
+rocker-bogie articulates over it properly: the bogie carries the front two
+wheels, the rocker balances that against the rear one, and the body ends up
+tilting roughly half as much as the ground does. Which is the whole reason
+the linkage exists.
+
+The rover *rides* the terrain — the ride height goes on the element, so the
+suspension only ever absorbs the difference between the wheels, however tall
+the mound. The arms are rigid too: a wheel that rises is drawn horizontally
+toward its pivot by exactly what the geometry demands, the way a real arm
+behaves. Without both of those the linkage tears itself apart on anything
+taller than the vehicle.
+
+The terrain is *drawn* from the same `groundAt()` the suspension *reads*, so
+the picture and the physics cannot drift apart.
+
+**The terrain is alive.** Mounds are generated, not drawn — each is a
+cluster of one to three gaussian bumps that overlap into ridges and saddles,
+and every one gets a fresh shape. New ones fade in every few seconds for as
+long as there is flat ground left to put them on, so the header gradually
+fills up. The biggest is taller than the rover, which then climbs clean out
+of the header.
+
+**The camera tracks the cursor.** The mast leans and the camera head tilts,
+both eased, so it reads as a servo taking up the movement rather than
+snapping to it.
+
+**Clicking fires the laser.** The beam is ray-marched against `groundAt()`
+too, so it stops where the ground actually is and throws sparks there — and
+a direct hit vaporises that mound. It fades back in somewhere else six to
+ten seconds later, with a new shape. Between the growth and the laser, the
+header is a slow tug of war.
+
+### The ros2 commands behave like ros2
+
+`ros2 launch` and `ros2 run` latch their tab and keep logging until you
+interrupt them with **ctrl-c** — which shuts the rover down, exactly as a
+real SIGINT would. The terminal has tabs for precisely this reason: hit `+`
+for a second shell and work there while the launch runs, the way you would
+in a real terminal. A tab whose process is still going is marked with a dot,
+and closing it hangs the process up.
+
+Or suffix the command with `&` to background it and keep the prompt:
+
+```
+> ros2 launch mars_rover rover.launch.py &
+```
+
+`ros2 topic echo <topic>` streams until interrupted, and every topic
+publishes real readings taken off the rover — `/mast_camera/pose` is the
+live mast angle, `/wheel_odom` its actual position, `/wheel_states` the
+three wheel heights. `ros2 topic list`, `ros2 topic hz`, `ros2 node list`
+and `ros2 node info` all work, and the argument errors match the real
+CLI's wording. `pkill rover` also stops it.
+
+The flag lives in `localStorage`, so the rover follows you from page to
+page. The whole thing is `assets/js/rover.js`, fetched only once someone
+runs the command — nobody pays for an easter egg they have not found.
 
 ## Motion and theme
 
@@ -123,5 +196,6 @@ JavaScript, never from the markup, so a reader without JS sees everything
 immediately rather than a blank page. Anyone with `prefers-reduced-motion`
 set skips the animation altogether.
 
-The whole JavaScript budget is two files: `assets/js/site.js` (theme and
-reveals, everywhere) and `assets/js/terminal.js` (homepage only).
+The JavaScript budget is `assets/js/site.js` (theme and reveals, on every
+page) and `assets/js/terminal.js` (homepage only). `assets/js/rover.js`
+is loaded on demand and only for people who find it.

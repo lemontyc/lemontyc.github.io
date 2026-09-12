@@ -1,0 +1,116 @@
+/* ─────────────────────────────────────────────────────────────
+   The masthead rover and the mound it drives over. Spawned by
+   `ros2 launch` in the homepage terminal; see assets/js/rover.js.
+   ───────────────────────────────────────────────────────────── */
+
+.masthead { position: sticky; }
+
+/* Lift the real header content above the rover's lane. */
+.masthead__inner { position: relative; z-index: 1; }
+
+.rover,
+.rover-terrain,
+.rover-laser {
+  position: absolute;
+  z-index: 0;            /* both drive behind the wordmark and the nav */
+  pointer-events: none;  /* never in the way of the navigation */
+  color: var(--ink-soft);
+}
+
+.rover {
+  left: 0;
+  bottom: -2.1px;        /* wheels meet the terrain baseline exactly */
+  width: 3.4rem;
+  height: 2.15rem;
+  will-change: transform;
+}
+
+.rover__svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.rover__lens { color: var(--accent); }
+
+.rover-terrain {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 62px;
+  color: var(--ink-faint);   /* enough contrast to read as ground */
+}
+.rover-terrain svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+/* The rover climbs out of the header on the big one; let it. */
+.masthead { overflow: visible; }
+
+/* The laser ---------------------------------------------------- */
+
+.rover-laser {
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+.rover-laser svg { width: 100%; height: 100%; display: block; }
+
+.laser__beam,
+.laser__glow {
+  stroke: var(--accent);
+  stroke-linecap: round;
+  fill: none;
+}
+.laser__beam { stroke-width: 0.9; animation: laser-beam 420ms ease-out forwards; }
+.laser__glow { stroke-width: 3; opacity: 0.16; animation: laser-beam 420ms ease-out forwards; }
+
+.laser__burst--big { stroke-width: 1.8; }
+
+.laser__burst {
+  stroke: var(--accent);
+  fill: none;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  animation: laser-burst 420ms cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes laser-beam {
+  0%   { opacity: 0; }
+  8%   { opacity: 1; }
+  55%  { opacity: 0.9; }
+  100% { opacity: 0; }
+}
+
+@keyframes laser-burst {
+  0%   { opacity: 0;    transform: scale(0.2); }
+  15%  { opacity: 0.95; transform: scale(0.7); }
+  100% { opacity: 0;    transform: scale(1.5); }
+}
+
+/* A flash of the lens as it fires. */
+@keyframes laser-lens {
+  0%, 100% { r: 1.7; }
+  30%      { r: 2.6; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .laser__beam,
+  .laser__glow,
+  .laser__burst {
+    animation-duration: 1ms;
+    animation-fill-mode: forwards;
+    opacity: 0.9;
+  }
+}
+
+/* The rover is decoration; if it cannot be seen it costs nothing. */
+@media print {
+  .rover,
+  .rover-terrain,
+  .rover-laser { display: none; }
+}
