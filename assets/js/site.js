@@ -1,37 +1,77 @@
-/* The entire JavaScript budget of this website. Spend it wisely. */
+/* Site-wide behaviour: the theme toggle, and a little motion on scroll.
+   Anything bigger than this belongs in its own file. */
 (function () {
   'use strict';
 
   var root = document.documentElement;
+  var still = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* ── Theme toggle ─────────────────────────────────────────── */
+
   var toggle = document.querySelector('.theme-toggle');
-  if (!toggle) return;
+  if (toggle) {
+    var media = window.matchMedia('(prefers-color-scheme: dark)');
 
-  var media = window.matchMedia('(prefers-color-scheme: dark)');
+    var isDark = function () {
+      var set = root.getAttribute('data-theme');
+      if (set === 'dark') return true;
+      if (set === 'light') return false;
+      return media.matches;
+    };
 
-  function isDark() {
-    var set = root.getAttribute('data-theme');
-    if (set === 'dark') return true;
-    if (set === 'light') return false;
-    return media.matches;
-  }
+    var sync = function () {
+      toggle.setAttribute('aria-pressed', isDark() ? 'true' : 'false');
+    };
 
-  function sync() {
-    toggle.setAttribute('aria-pressed', isDark() ? 'true' : 'false');
-  }
-
-  toggle.addEventListener('click', function () {
-    var next = isDark() ? 'light' : 'dark';
-    root.setAttribute('data-theme', next);
-    try { localStorage.setItem('theme', next); } catch (e) { /* oh well */ }
-    sync();
-  });
-
-  /* If the reader has not chosen, follow the OS when it changes its mind. */
-  if (media.addEventListener) {
-    media.addEventListener('change', function () {
-      if (!root.getAttribute('data-theme')) sync();
+    toggle.addEventListener('click', function () {
+      var next = isDark() ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) { /* oh well */ }
+      sync();
     });
+
+    /* If the reader has not chosen, follow the OS when it changes its mind. */
+    if (media.addEventListener) {
+      media.addEventListener('change', function () {
+        if (!root.getAttribute('data-theme')) sync();
+      });
+    }
+
+    sync();
   }
 
-  sync();
+  /* ── Reveal on scroll ─────────────────────────────────────── */
+  /* Applied from JS only, so without JavaScript everything is
+     simply visible rather than stuck at opacity zero. */
+
+  if (still.matches || !('IntersectionObserver' in window)) return;
+
+  var targets = document.querySelectorAll(
+    '.post-item, .stats__item, .section__head, .year__label, ' +
+    '.gallery__item, .post-nav__link, .pullquote, .empty'
+  );
+  if (!targets.length) return;
+
+  var observer = new IntersectionObserver(function (entries, obs) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      /* Stagger items that share a list, so rows arrive in sequence. */
+      var i = Number(entry.target.getAttribute('data-reveal-i')) || 0;
+      entry.target.style.transitionDelay = Math.min(i, 5) * 55 + 'ms';
+      entry.target.classList.add('is-in');
+      obs.unobserve(entry.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.1 });
+
+  var lastParent = null;
+  var index = 0;
+
+  Array.prototype.forEach.call(targets, function (el) {
+    if (el.parentNode !== lastParent) { lastParent = el.parentNode; index = 0; }
+    el.setAttribute('data-reveal-i', index);
+    index += 1;
+
+    el.classList.add('reveal');
+    observer.observe(el);
+  });
 })();

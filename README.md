@@ -10,10 +10,11 @@ _config.yml          name, bio, nav-adjacent settings, social links
 _data/nav.yml        the top navigation
 _data/photos.yml     the photo gallery
 _layouts/            default, home, post, page, archive, gallery, taxonomy
-_includes/           head, nav, footer, post-item
+_includes/           head, nav, footer, post-item, terminal
 _sass/_tokens.scss   every colour and size, in one place — start here
 _sass/_base.scss     reset, typography, prose styles for posts
 _sass/_components.scss  masthead, hero, lists, gallery, footer
+_sass/_terminal.scss    the homepage terminal, and scroll reveals
 _pages/              about, now, photos, writing, tags, categories, 404
 _posts/              the writing
 ```
@@ -89,8 +90,38 @@ Push to `master`. GitHub Pages builds it. The only plugins used —
 `jekyll-feed` and `jekyll-sitemap` — are both on the GitHub Pages allowlist,
 so the local build and the deployed build agree.
 
-## Theme switching
+## The terminal
+
+The card in the homepage hero is a working toy. Type `help` in it.
+
+Adding a command means adding one entry to `COMMANDS` in
+`assets/js/terminal.js`. A command is a function returning an array of lines,
+where a line is either a string or `{ href, text }` for a link:
+
+```js
+climbing: function () {
+  return [
+    'mostly indoors lately. the grades are not improving.',
+    { href: base + '/now/', text: 'more here' }
+  ];
+},
+```
+
+That is the whole API. Bare section names (`writing`, `photos`, `now`,
+`about`) already navigate without being declared.
+
+With JavaScript off, the card degrades to a static panel showing the bio,
+so nothing is lost.
+
+## Motion and theme
 
 Light and dark follow the reader's OS by default; the lamp in the corner
-overrides that and remembers the choice in `localStorage`. All of it is
-`assets/js/site.js`, which is the whole JavaScript budget of the site.
+overrides that and remembers the choice in `localStorage`.
+
+Sections fade up as they enter view. The classes that do this are added from
+JavaScript, never from the markup, so a reader without JS sees everything
+immediately rather than a blank page. Anyone with `prefers-reduced-motion`
+set skips the animation altogether.
+
+The whole JavaScript budget is two files: `assets/js/site.js` (theme and
+reveals, everywhere) and `assets/js/terminal.js` (homepage only).

@@ -1,0 +1,41 @@
+{%- assign term_first = site.posts | last -%}
+{%- assign term_from = term_first.date | date: "%Y" -%}
+{%- assign term_to = site.time | date: "%Y" -%}
+{%- assign term_years = term_to | minus: term_from | plus: 1 -%}
+<div class="term" data-term
+     data-base="{{ site.baseurl }}"
+     data-posts="{{ site.posts | size }}"
+     data-years="{{ term_years }}">
+  <div class="term__bar">
+    <span class="term__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="term__name">luis@lemontyc: ~</span>
+  </div>
+
+  <div class="term__screen" data-term-screen>
+    {%- comment -%}
+      The log starts with real content so that the card still says something
+      useful with JavaScript switched off. The script clears it and replays
+      the same exchange with a typing animation.
+    {%- endcomment -%}
+    <ol class="term__log" data-term-log>
+      <li class="term__line term__line--in"><span class="term__prompt" aria-hidden="true">&gt;</span>whoami</li>
+      <li class="term__line">{{ site.author.bio }}</li>
+    </ol>
+
+    <form class="term__form" data-term-form>
+      <label class="term__prompt" for="term-input" aria-hidden="true">&gt;</label>
+      <input
+        id="term-input"
+        class="term__input"
+        data-term-input
+        type="text"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false"
+        placeholder="type &quot;help&quot;"
+        aria-label="Try a command. Type help and press enter.">
+      <span class="term__measure" data-term-measure aria-hidden="true"></span>
+    </form>
+  </div>
+</div>

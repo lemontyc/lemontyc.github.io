@@ -9,9 +9,7 @@ layout: default
 
 <section class="hero">
   <div class="wrap">
-    <p class="hero__eyebrow"><span class="prompt">&gt;</span> whoami<span class="cursor" aria-hidden="true"></span></p>
-
-    <div class="hero__grid">
+      <div class="hero__grid">
       <div class="hero__body">
         <h1 class="hero__title">Hi, I&rsquo;m {{ site.author.name }}.</h1>
         <p class="hero__lede">{{ site.author.bio }}</p>
@@ -25,11 +23,14 @@ layout: default
         </p>
       </div>
 
-      {%- if site.author.avatar %}
-      <figure class="hero__portrait">
-        <img src="{{ site.author.avatar | relative_url }}" alt="{{ site.author.name }}" loading="lazy">
-      </figure>
-      {%- endif %}
+      <div class="hero__aside">
+        {%- if site.author.avatar %}
+        <figure class="hero__portrait">
+          <img src="{{ site.author.avatar | relative_url }}" alt="{{ site.author.name }}" loading="lazy">
+        </figure>
+        {%- endif %}
+        {% include terminal.html %}
+      </div>
     </div>
 
     <dl class="stats" aria-label="Site statistics">
