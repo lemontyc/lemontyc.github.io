@@ -1,0 +1,72 @@
+{
+  // Local preview for lemontyc.com. Everything runs in Docker, so there is
+  // no Ruby to install on the machine.
+  //
+  // Run these with:  Ctrl+Shift+P  →  "Tasks: Run Task"
+  // "Site: Serve" is the default build task, so Ctrl+Shift+B starts it.
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Site: Serve",
+      "detail": "Start the site at http://localhost:4000 and rebuild on every save",
+      "type": "shell",
+      "command": "docker run --rm -it --name lemontyc-site -p 4000:4000 -p 35729:35729 -v \"${workspaceFolder}:/site\" lemontyc-site jekyll serve --host 0.0.0.0 --livereload --force_polling --incremental",
+      "dependsOn": "Site: Build preview image",
+      "group": { "kind": "build", "isDefault": true },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Site: Build preview image",
+      "detail": "One-off Docker image build. Fast after the first run; re-run if docker/Dockerfile changes",
+      "type": "shell",
+      "command": "docker build -t lemontyc-site \"${workspaceFolder}/docker\"",
+      "presentation": {
+        "reveal": "silent",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Site: Stop",
+      "detail": "Stop the preview server if it is still holding port 4000",
+      "type": "shell",
+      "command": "docker rm -f lemontyc-site",
+      "presentation": {
+        "reveal": "silent",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Site: Build once",
+      "detail": "Build into _site/ without serving — the same build GitHub Pages runs",
+      "type": "shell",
+      "command": "docker run --rm -v \"${workspaceFolder}:/site\" lemontyc-site jekyll build --safe --trace",
+      "dependsOn": "Site: Build preview image",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Site: Open in browser",
+      "detail": "Open http://localhost:4000 (start 'Site: Serve' first)",
+      "type": "shell",
+      "command": "start http://localhost:4000",
+      "windows": {
+        "command": "Start-Process http://localhost:4000"
+      },
+      "presentation": {
+        "reveal": "never"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

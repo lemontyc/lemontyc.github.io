@@ -1,0 +1,23 @@
+{%- assign words = include.post.content | number_of_words -%}
+{%- assign minutes = words | divided_by: 200 | plus: 1 -%}
+<li class="post-item">
+  <a class="post-item__link" href="{{ include.post.url | relative_url }}">
+    <div class="post-item__meta">
+      <time datetime="{{ include.post.date | date_to_xmlschema }}">{{ include.post.date | date: "%b %-d, %Y" }}</time>
+      <span class="dot" aria-hidden="true">·</span>
+      <span>{{ minutes }} min</span>
+    </div>
+    <h3 class="post-item__title">{{ include.post.title }}</h3>
+    {%- assign blurb = include.post.description | default: include.post.excerpt -%}
+    {%- if blurb %}
+    <p class="post-item__blurb">{{ blurb | strip_html | normalize_whitespace | truncate: 155 }}</p>
+    {%- endif %}
+  </a>
+  {%- if include.post.tags.size > 0 %}
+  <ul class="taglist taglist--small">
+    {%- for tag in include.post.tags limit: 4 %}
+    <li><a class="tag" href="{{ '/tags/' | relative_url }}#{{ tag | slugify }}">{{ tag }}</a></li>
+    {%- endfor %}
+  </ul>
+  {%- endif %}
+</li>

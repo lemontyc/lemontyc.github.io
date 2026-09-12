@@ -1,0 +1,92 @@
+/* ─────────────────────────────────────────────────────────────
+   Tokens — every colour, size and rhythm value in one place.
+   Change something here and it changes everywhere. That's the point.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* Paper, ink, and one warm accent. */
+  --paper      : #faf6ef;
+  --paper-translucent: rgba(250, 246, 239, 0.88);
+  --paper-sunk : #f3ece0;
+  --paper-card : #fffdf9;
+  --ink        : #211c16;
+  --ink-soft   : #6b6054;
+  --ink-faint  : #9c9184;
+  --rule       : #e2d8c8;
+  --rule-soft  : #ece4d7;
+
+  --accent     : #b4531a;   /* links, underlines, the warm bit */
+  --accent-lift: #8f3f10;
+  --terminal   : #4a7a3a;   /* prompts, cursor, the engineer's fingerprint */
+  --highlight  : rgba(180, 83, 26, 0.14);
+
+  --shadow     : 0 1px 2px rgba(33, 28, 22, 0.05), 0 8px 24px -12px rgba(33, 28, 22, 0.18);
+
+  /* Type */
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body   : -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono   : "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* A fluid scale — small screens get smaller type, no media queries needed. */
+  --step--1 : clamp(0.80rem, 0.77rem + 0.15vw, 0.875rem);
+  --step-0  : clamp(1.00rem, 0.96rem + 0.20vw, 1.125rem);
+  --step-1  : clamp(1.20rem, 1.12rem + 0.40vw, 1.45rem);
+  --step-2  : clamp(1.45rem, 1.30rem + 0.75vw, 1.95rem);
+  --step-3  : clamp(1.80rem, 1.50rem + 1.50vw, 2.75rem);
+  --step-4  : clamp(2.25rem, 1.70rem + 2.75vw, 4.25rem);
+
+  /* Space */
+  --gutter  : clamp(1.25rem, 0.9rem + 1.6vw, 2.5rem);
+  --measure : 42rem;   /* reading width — roughly 70 characters */
+  --page    : 68rem;   /* full layout width */
+
+  --radius  : 4px;
+  --ease    : cubic-bezier(0.2, 0.7, 0.3, 1);
+
+  color-scheme: light;
+}
+
+/* Dark mode: follow the OS unless the reader has picked a side. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper      : #17140f;
+    --paper-translucent: rgba(23, 20, 15, 0.88);
+    --paper-sunk : #100e0a;
+    --paper-card : #201b15;
+    --ink        : #ece3d5;
+    --ink-soft   : #a79c8c;
+    --ink-faint  : #776d5f;
+    --rule       : #352e25;
+    --rule-soft  : #281f18;
+
+    --accent     : #e8894a;
+    --accent-lift: #f4a970;
+    --terminal   : #8fbf6a;
+    --highlight  : rgba(232, 137, 74, 0.18);
+
+    --shadow     : 0 1px 2px rgba(0, 0, 0, 0.4), 0 10px 30px -14px rgba(0, 0, 0, 0.7);
+
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper      : #17140f;
+  --paper-translucent: rgba(23, 20, 15, 0.88);
+  --paper-sunk : #100e0a;
+  --paper-card : #201b15;
+  --ink        : #ece3d5;
+  --ink-soft   : #a79c8c;
+  --ink-faint  : #776d5f;
+  --rule       : #352e25;
+  --rule-soft  : #281f18;
+
+  --accent     : #e8894a;
+  --accent-lift: #f4a970;
+  --terminal   : #8fbf6a;
+  --highlight  : rgba(232, 137, 74, 0.18);
+
+  --shadow     : 0 1px 2px rgba(0, 0, 0, 0.4), 0 10px 30px -14px rgba(0, 0, 0, 0.7);
+
+  color-scheme: dark;
+}

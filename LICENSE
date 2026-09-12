@@ -1,6 +1,16 @@
-The MIT License (MIT)
+Copyright (c) 2020-2026 Luis M. (lemontyc)
 
-Copyright (c) 2013-2024 Michael Rose and contributors
+This repository contains two different kinds of thing, and they are licensed
+differently.
+
+
+================================================================================
+THE CODE — MIT License
+================================================================================
+
+Applies to the theme: everything in _layouts/, _includes/, _sass/, assets/css/,
+assets/js/, and the configuration files. Take it, learn from it, build your own
+site on it.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +29,26 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+
+================================================================================
+THE CONTENT — CC BY-NC-ND 4.0
+================================================================================
+
+Applies to the writing in _posts/ and _pages/, and to the photographs and other
+images in assets/images/.
+
+These are licensed under the Creative Commons
+Attribution-NonCommercial-NoDerivatives 4.0 International License.
+
+In short, you may share them — copy and redistribute in any medium or format —
+provided that you:
+
+  * give appropriate credit and link back to the original,
+  * do not use them commercially, and
+  * do not distribute modified versions.
+
+Full text: https://creativecommons.org/licenses/by-nc-nd/4.0/
+
+Want to do something the licence doesn't cover — print a photograph, republish
+an article, use an image in a commercial project? Ask. The answer is often yes.

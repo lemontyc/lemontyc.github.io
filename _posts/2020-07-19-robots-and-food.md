@@ -1,8 +1,7 @@
 ---
 title: "Robots and food"
+description: "A resolutions check-in from the middle of a pandemic. Three dishes learned, one robotics course started, several plans quietly deferred."
 last_modified_at: 2020-12-28T16:20:02-05:00
-classes: wide
-author_profile: false
 categories:
   - resolutions
 tags:

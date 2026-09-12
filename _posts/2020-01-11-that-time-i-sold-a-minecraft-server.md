@@ -1,8 +1,7 @@
 ---
 title: "That Time I sold a Minecraft server..."
+description: "How a dirt house built out of boredom became a 40-player server called Cubic Empire, and why I handed the keys to a stranger."
 last_modified_at: 2020-12-28T16:20:02-05:00
-classes: wide
-author_profile: false
 categories:
   - business
   - videogames

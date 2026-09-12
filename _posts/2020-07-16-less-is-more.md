@@ -1,8 +1,7 @@
 ---
 title: "Less is more!"
+description: "Two hours of theme shopping, one conclusion, and a lesson I wish applied to review articles."
 last_modified_at: 2020-12-28T16:20:02-05:00
-classes: wide
-author_profile: false
 categories:
   - web
 tags:

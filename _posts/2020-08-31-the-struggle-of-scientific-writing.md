@@ -1,8 +1,7 @@
 ---
 title: "The struggle of scientific writing"
+description: "I thought I could write. Then I tried to write a paper and discovered there is no hello world for academia."
 last_modified_at: 2020-12-28T16:20:02-05:00
-classes: wide
-author_profile: false
 categories:
   - article
 tags:

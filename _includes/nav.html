@@ -1,0 +1,24 @@
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap masthead__inner">
+    <a class="brand" href="{{ '/' | relative_url }}">
+      <span class="brand__mark" aria-hidden="true"></span>
+      <span class="brand__name">{{ site.title }}</span>
+    </a>
+
+    <nav class="nav" aria-label="Main">
+      {%- for item in site.data.nav %}
+      {%- assign item_url = item.url | relative_url %}
+      <a class="nav__link{% if page.url contains item.url %} is-current{% endif %}"
+         href="{{ item_url }}"
+         title="{{ item.note }}"
+         {% if page.url contains item.url %}aria-current="page"{% endif %}>{{ item.title }}</a>
+      {%- endfor %}
+
+      <button class="theme-toggle" type="button" aria-label="Switch between light and dark" title="it's a lamp. click it.">
+        <span class="theme-toggle__icon" aria-hidden="true"></span>
+      </button>
+    </nav>
+  </div>
+</header>

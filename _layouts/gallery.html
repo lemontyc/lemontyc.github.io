@@ -1,0 +1,43 @@
+---
+layout: default
+---
+{%- assign photos = site.data.photos -%}
+
+<article class="page">
+  <header class="page__head wrap">
+    {%- if page.eyebrow %}<p class="page__eyebrow"><span class="prompt">&gt;</span> {{ page.eyebrow }}</p>{%- endif %}
+    <h1 class="page__title">{{ page.title }}</h1>
+    {%- if page.subtitle %}<p class="page__subtitle">{{ page.subtitle }}</p>{%- endif %}
+  </header>
+
+  {%- if content != "" %}
+  <div class="prose wrap wrap--narrow">{{ content }}</div>
+  {%- endif %}
+
+  <div class="wrap">
+    {%- if photos and photos.size > 0 %}
+    <div class="gallery">
+      {%- for photo in photos %}
+      <figure class="gallery__item{% if photo.tall %} gallery__item--tall{% endif %}">
+        <img src="{{ photo.src | relative_url }}" alt="{{ photo.alt }}" loading="lazy" decoding="async">
+        {%- if photo.caption or photo.year %}
+        <figcaption>
+          {%- if photo.caption %}<span class="gallery__caption">{{ photo.caption }}</span>{% endif %}
+          {%- if photo.year %}<span class="gallery__year">{{ photo.year }}</span>{% endif %}
+        </figcaption>
+        {%- endif %}
+      </figure>
+      {%- endfor %}
+    </div>
+    {%- else %}
+    <div class="empty">
+      <p class="empty__art" aria-hidden="true">[ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]</p>
+      <p class="empty__title">No photos here yet.</p>
+      <p class="empty__note">
+        The memory cards are full. The willpower to sit down and cull them is not.<br>
+        Check back — or nudge me about it.
+      </p>
+    </div>
+    {%- endif %}
+  </div>
+</article>

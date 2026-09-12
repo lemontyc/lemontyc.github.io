@@ -1,0 +1,43 @@
+---
+layout: default
+---
+{%- if page.taxonomy == 'categories' -%}
+  {%- assign groups = site.categories -%}
+  {%- assign base = '/categories/' -%}
+{%- else -%}
+  {%- assign groups = site.tags -%}
+  {%- assign base = '/tags/' -%}
+{%- endif -%}
+{%- assign sorted = groups | sort -%}
+
+<article class="page">
+  <header class="page__head wrap">
+    {%- if page.eyebrow %}<p class="page__eyebrow"><span class="prompt">&gt;</span> {{ page.eyebrow }}</p>{%- endif %}
+    <h1 class="page__title">{{ page.title }}</h1>
+    {%- if page.subtitle %}<p class="page__subtitle">{{ page.subtitle }}</p>{%- endif %}
+  </header>
+
+  <div class="wrap">
+    <nav class="taxonomy-index" aria-label="Jump to a {{ page.taxonomy }}">
+      <ul class="taglist">
+        {%- for group in sorted %}
+        <li><a class="tag" href="#{{ group[0] | slugify }}">{{ group[0] }} <span class="tag__count">{{ group[1] | size }}</span></a></li>
+        {%- endfor %}
+      </ul>
+    </nav>
+
+    {%- for group in sorted %}
+    <section class="taxonomy" id="{{ group[0] | slugify }}">
+      <h2 class="taxonomy__title">
+        {{ group[0] }}
+        <span class="taxonomy__count">{{ group[1] | size }} post{% if group[1].size != 1 %}s{% endif %}</span>
+      </h2>
+      <ul class="post-list">
+        {%- for post in group[1] %}
+          {% include post-item.html post=post %}
+        {%- endfor %}
+      </ul>
+    </section>
+    {%- endfor %}
+  </div>
+</article>

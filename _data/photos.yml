@@ -1,0 +1,17 @@
+# ──────────────────────────────────────────────────────────────
+#  The photo gallery.
+#
+#  1. Drop image files into  assets/images/photos/
+#  2. Add an entry below. `src` and `alt` are required; the rest is optional.
+#  3. That's it — the grid, the lightbox and the captions take care of themselves.
+#
+#  Tip: web-sized JPEGs (~1600px on the long edge, 80% quality) keep the
+#  page fast. GitHub Pages has a soft 1 GB repo limit, so be nice to it.
+#
+#  Uncomment and edit:
+#
+# - src     : /assets/images/photos/example.jpg
+#   alt     : "A short description, for screen readers and for when the image 404s"
+#   caption : "Where it was, or what you were thinking"
+#   year    : 2025
+#   tall    : true      # optional — makes this one span two rows in the grid

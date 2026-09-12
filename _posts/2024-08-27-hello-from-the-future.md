@@ -1,8 +1,7 @@
 ---
 title: "Hello From the Future"
+description: "Four years of silence, explained: a published paper, a master's, a move abroad, two jobs, and a fiancée."
 last_modified_at: 2024-08-27T19:03:02-05:00
-classes: wide
-author_profile: false
 categories:
   - article
 tags:

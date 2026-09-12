@@ -1,7 +1,8 @@
 ---
-title: "Posts by Categories"
+layout: taxonomy
+taxonomy: categories
 permalink: /categories/
-layout: categories
-classes: wide
-author_profile: false
+title: "Categories"
+eyebrow: "group_by category"
+subtitle: "Broad strokes. There are fewer of these than there are tags, which is the entire point of them."
 ---

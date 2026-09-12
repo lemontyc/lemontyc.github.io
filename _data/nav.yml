@@ -1,0 +1,14 @@
+# Site navigation. Order here is order on screen.
+# `note` becomes the link's tooltip — the only place jokes are allowed in the nav.
+- title : "writing"
+  url   : "/writing/"
+  note  : "eight posts across six years. pace yourself."
+- title : "photos"
+  url   : "/photos/"
+  note  : "mostly nature. increasingly, people."
+- title : "now"
+  url   : "/now/"
+  note  : "what I'm doing instead of writing posts."
+- title : "about"
+  url   : "/about/"
+  note  : "the short version."

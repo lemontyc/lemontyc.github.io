@@ -1,8 +1,7 @@
 ---
 title: "About those books..."
+description: "A running list of what I have read, kept mostly so that future me stops asking."
 last_modified_at: 2020-12-28T16:20:02-05:00
-classes: wide
-author_profile: false
 categories:
   - books
 tags:

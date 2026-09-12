@@ -1,0 +1,53 @@
+---
+layout: default
+---
+{%- assign words = content | number_of_words -%}
+{%- assign minutes = words | divided_by: 200 | plus: 1 -%}
+
+<article class="post h-entry">
+  <header class="post__head wrap wrap--narrow">
+    <p class="post__meta">
+      <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time>
+      <span class="dot" aria-hidden="true">·</span>
+      <span>{{ minutes }} min read</span>
+      {%- if page.categories.size > 0 %}
+      <span class="dot" aria-hidden="true">·</span>
+      <span>{% for c in page.categories %}<a href="{{ '/categories/' | relative_url }}#{{ c | slugify }}">{{ c }}</a>{% unless forloop.last %}, {% endunless %}{% endfor %}</span>
+      {%- endif %}
+    </p>
+    <h1 class="post__title p-name">{{ page.title }}</h1>
+  </header>
+
+  <div class="prose e-content wrap wrap--narrow">
+    {{ content }}
+  </div>
+
+  <footer class="post__foot wrap wrap--narrow">
+    {%- if page.tags.size > 0 %}
+    <ul class="taglist">
+      {%- for tag in page.tags %}
+      <li><a class="tag" href="{{ '/tags/' | relative_url }}#{{ tag | slugify }}">{{ tag }}</a></li>
+      {%- endfor %}
+    </ul>
+    {%- endif %}
+
+    {%- if page.last_modified_at %}
+    <p class="post__edited">Last poked at {{ page.last_modified_at | date: "%B %-d, %Y" }}.</p>
+    {%- endif %}
+  </footer>
+</article>
+
+<nav class="post-nav wrap wrap--narrow" aria-label="Other posts">
+  {%- if page.previous %}
+  <a class="post-nav__link post-nav__link--prev" href="{{ page.previous.url | relative_url }}">
+    <span class="post-nav__label">&larr; Older</span>
+    <span class="post-nav__title">{{ page.previous.title }}</span>
+  </a>
+  {%- endif %}
+  {%- if page.next %}
+  <a class="post-nav__link post-nav__link--next" href="{{ page.next.url | relative_url }}">
+    <span class="post-nav__label">Newer &rarr;</span>
+    <span class="post-nav__title">{{ page.next.title }}</span>
+  </a>
+  {%- endif %}
+</nav>

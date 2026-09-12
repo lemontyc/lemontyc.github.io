@@ -1,21 +1,36 @@
-<div class="page__footer-follow">
-  <ul class="social-icons">
-    {% if site.data.ui-text[site.locale].follow_label %}
-      <li><strong>{{ site.data.ui-text[site.locale].follow_label }}</strong></li>
-    {% endif %}
+<footer class="footer">
+  <div class="wrap footer__inner">
 
-    {% if site.footer.links %}
-      {% for link in site.footer.links %}
-        {% if link.label and link.url %}
-          <li><a href="{{ link.url }}" rel="nofollow noopener noreferrer"><i class="{{ link.icon | default: 'fas fa-link' }}" aria-hidden="true"></i> {{ link.label }}</a></li>
-        {% endif %}
-      {% endfor %}
-    {% endif %}
+    <div class="footer__col">
+      <p class="footer__sig">{{ site.title }}</p>
+      <p class="footer__note">
+        Built with Jekyll and hosted free on GitHub Pages.<br>
+        Less is more — mostly because more costs money.
+      </p>
+    </div>
 
-    {% unless site.atom_feed.hide %}
-      <li><a href="{% if site.atom_feed.path %}{{ site.atom_feed.path }}{% else %}{{ '/feed.xml' | relative_url }}{% endif %}"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> {{ site.data.ui-text[site.locale].feed_label | default: "Feed" }}</a></li>
-    {% endunless %}
-  </ul>
-</div>
+    <div class="footer__col">
+      <h2 class="footer__head">Elsewhere</h2>
+      <ul class="footer__links">
+        {%- for link in site.elsewhere %}
+        <li><a href="{{ link.url }}" rel="me">{{ link.name }}</a></li>
+        {%- endfor %}
+        <li><a href="{{ '/feed.xml' | relative_url }}">RSS</a></li>
+      </ul>
+    </div>
 
-<div class="page__footer-copyright">&copy; {{ site.time | date: '%Y' }} <a href="{{ site.copyright_url | default: site.url }}">{{ site.copyright | default: site.title }}</a>. {{ site.data.ui-text[site.locale].powered_by | default: "Powered by" }} <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
+    <div class="footer__col">
+      <h2 class="footer__head">Elsewhere here</h2>
+      <ul class="footer__links">
+        <li><a href="{{ '/writing/' | relative_url }}">All posts</a></li>
+        <li><a href="{{ '/tags/' | relative_url }}">Tags</a></li>
+        <li><a href="{{ '/categories/' | relative_url }}">Categories</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="wrap footer__fine">
+    <p>&copy; {{ site.time | date: "%Y" }} {{ site.author.name }}. Opinions are mine and subject to change without notice — see the archive for proof.</p>
+  </div>
+</footer>

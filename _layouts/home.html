@@ -1,22 +1,66 @@
 ---
-layout: archive
+layout: default
 ---
+{%- assign post_count = site.posts | size -%}
+{%- assign first_post = site.posts | last -%}
+{%- assign first_year = first_post.date | date: "%Y" -%}
+{%- assign this_year = site.time | date: "%Y" -%}
+{%- assign span = this_year | minus: first_year | plus: 1 -%}
 
-{{ content }}
+<section class="hero">
+  <div class="wrap">
+    <p class="hero__eyebrow"><span class="prompt">&gt;</span> whoami<span class="cursor" aria-hidden="true"></span></p>
 
-<h3 class="archive__subtitle">{{ site.data.ui-text[site.locale].recent_posts | default: "Recent Posts" }}</h3>
+    <div class="hero__grid">
+      <div class="hero__body">
+        <h1 class="hero__title">Hi, I&rsquo;m {{ site.author.name }}.</h1>
+        <p class="hero__lede">{{ site.author.bio }}</p>
+        <p class="hero__sub">
+          In the remaining hours I climb rocks, point a camera at things,
+          and keep a list of resolutions that is best described as aspirational.
+        </p>
+        <p class="hero__actions">
+          <a class="btn" href="{{ '/writing/' | relative_url }}">Read the writing</a>
+          <a class="btn btn--ghost" href="{{ '/about/' | relative_url }}">Who is this person</a>
+        </p>
+      </div>
 
-{% if paginator %}
-  {% assign posts = paginator.posts %}
-{% else %}
-  {% assign posts = site.posts %}
-{% endif %}
+      {%- if site.author.avatar %}
+      <figure class="hero__portrait">
+        <img src="{{ site.author.avatar | relative_url }}" alt="{{ site.author.name }}" loading="lazy">
+      </figure>
+      {%- endif %}
+    </div>
 
-{% assign entries_layout = page.entries_layout | default: 'list' %}
-<div class="entries-{{ entries_layout }}">
-  {% for post in posts %}
-    {% include archive-single.html type=entries_layout %}
-  {% endfor %}
-</div>
+    <dl class="stats" aria-label="Site statistics">
+      <div class="stats__item"><dt>posts</dt><dd>{{ post_count }}</dd></div>
+      <div class="stats__item"><dt>years running</dt><dd>{{ span }}</dd></div>
+      <div class="stats__item"><dt>unexplained gaps</dt><dd>1</dd></div>
+      <div class="stats__item"><dt>Minecraft servers sold</dt><dd>1</dd></div>
+    </dl>
+  </div>
+</section>
 
-{% include paginator.html %}
+<section class="section">
+  <div class="wrap">
+    <div class="section__head">
+      <h2 class="section__title">Recently</h2>
+      <a class="section__more" href="{{ '/writing/' | relative_url }}">all {{ post_count }} posts &rarr;</a>
+    </div>
+
+    <ul class="post-list">
+      {%- for post in site.posts limit: 5 %}
+        {% include post-item.html post=post %}
+      {%- endfor %}
+    </ul>
+  </div>
+</section>
+
+<section class="section section--quiet">
+  <div class="wrap">
+    <blockquote class="pullquote">
+      <p>Keep your options open.</p>
+      <cite>&mdash; Me, in a post, quoting me, a few paragraphs earlier</cite>
+    </blockquote>
+  </div>
+</section>

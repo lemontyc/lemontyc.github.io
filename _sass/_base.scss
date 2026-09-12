@@ -1,0 +1,207 @@
+/* ─────────────────────────────────────────────────────────────
+   Base — reset, page frame, and the prose styles that carry posts.
+   ───────────────────────────────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  /* Keeps the footer at the bottom of short pages. */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+
+  /* A whisper of paper grain. Invisible until you look for it. */
+  background-image: radial-gradient(var(--rule-soft) 0.5px, transparent 0.5px);
+  background-size: 22px 22px;
+}
+
+img, svg, video { max-width: 100%; height: auto; display: block; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-variation-settings: "SOFT" 22, "WONK" 1;
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+p { margin: 0 0 1.1em; }
+
+a {
+  color: var(--accent);
+  text-decoration-color: var(--rule);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 0.15s var(--ease), text-decoration-color 0.15s var(--ease);
+}
+a:hover { color: var(--accent-lift); text-decoration-color: currentColor; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection { background: var(--highlight); }
+
+code, pre, kbd { font-family: var(--font-mono); font-size: 0.88em; }
+
+hr {
+  border: 0;
+  height: 1px;
+  background: var(--rule);
+  margin: 2.5rem 0;
+}
+
+/* Frame ------------------------------------------------------ */
+
+.wrap {
+  width: 100%;
+  max-width: var(--page);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.wrap--narrow { max-width: calc(var(--measure) + var(--gutter) * 2); }
+
+.main { flex: 1 0 auto; }
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.6rem 1rem;
+  z-index: 99;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+}
+.skip-link:focus { left: 0; }
+
+/* The mono voice — dates, labels, asides, anything machine-ish. */
+.prompt { color: var(--terminal); font-weight: 500; }
+
+.cursor {
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  margin-left: 0.25em;
+  background: var(--terminal);
+  vertical-align: -0.15em;
+  animation: blink 1.15s steps(2, start) infinite;
+}
+@keyframes blink { to { visibility: hidden; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor { animation: none; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.dot { color: var(--ink-faint); margin: 0 0.5em; }
+
+/* Prose ------------------------------------------------------ */
+
+.prose {
+  font-size: var(--step-0);
+}
+
+.prose > * + * { margin-top: 1.1em; }
+
+.prose h1, .prose h2, .prose h3 {
+  margin-top: 2.4em;
+  margin-bottom: 0.5em;
+}
+.prose h1 { font-size: var(--step-3); }
+.prose h2 { font-size: var(--step-2); }
+.prose h3 { font-size: var(--step-1); }
+
+/* A small terminal tick before every section heading in a post. */
+.prose h2::before {
+  content: "> ";
+  color: var(--terminal);
+  font-family: var(--font-mono);
+  font-size: 0.7em;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.prose ul, .prose ol { padding-left: 1.3em; margin-block: 1.1em; }
+.prose li { margin-bottom: 0.4em; }
+.prose li::marker { color: var(--accent); }
+
+.prose img {
+  margin-block: 2rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--rule);
+  box-shadow: var(--shadow);
+}
+
+.prose blockquote {
+  margin: 2rem 0;
+  padding: 0.2rem 0 0.2rem 1.4rem;
+  border-left: 2px solid var(--terminal);
+  color: var(--ink-soft);
+  font-family: var(--font-display);
+  font-variation-settings: "SOFT" 40, "WONK" 1;
+  font-size: var(--step-1);
+  font-style: italic;
+  line-height: 1.4;
+}
+.prose blockquote p { margin-bottom: 0.4em; }
+/* Two blockquotes in a row means quote-then-attribution. Style it that way. */
+.prose blockquote + blockquote {
+  margin-top: -1.6rem;
+  border-left-color: transparent;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-style: normal;
+  color: var(--ink-faint);
+}
+.prose blockquote + blockquote p::before { content: "— "; }
+.prose blockquote + blockquote em { font-style: normal; }
+
+.prose code {
+  background: var(--paper-sunk);
+  border: 1px solid var(--rule-soft);
+  border-radius: 3px;
+  padding: 0.1em 0.35em;
+}
+
+.prose pre {
+  background: var(--paper-sunk);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+  overflow-x: auto;
+  line-height: 1.5;
+}
+.prose pre code { background: none; border: 0; padding: 0; }
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--step--1);
+}
+.prose th, .prose td {
+  text-align: left;
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid var(--rule);
+}
+.prose th { font-family: var(--font-mono); font-weight: 500; }
+
+.prose a { text-decoration-color: var(--accent); }

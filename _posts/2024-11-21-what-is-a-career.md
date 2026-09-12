@@ -1,8 +1,7 @@
 ---
 title: "What is a career?"
+description: "On Asimo, the Mandela effect, and the danger of swearing you will never do web development."
 last_modified_at: 2024-11-21T20:18:02-05:00
-classes: wide
-author_profile: false
 categories:
   - article
 tags:
@@ -11,7 +10,6 @@ tags:
   - life
 ---
 
-# What is a career?
 Honestly, come back in 10 years. Maybe, just maybe I might be able to explain it by looking back at mine. 
 
 No, but seriuously, just keep your options open.
@@ -29,7 +27,7 @@ Well, remember that little robot? I  also ended up working for that company. And
 
 >Keep your options open.
 
-> -*Me, some paragraphs before.*
+> *Me, some paragraphs before.*
 
 
 

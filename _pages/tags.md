@@ -1,7 +1,8 @@
 ---
-title: "Posts by tags"
+layout: taxonomy
+taxonomy: tags
 permalink: /tags/
-layout: tags
-classes: wide
-author_profile: false
+title: "Tags"
+eyebrow: "group_by tag"
+subtitle: "Finer strokes. A few of these have exactly one post, and I have made peace with that."
 ---
