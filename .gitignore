@@ -15,6 +15,10 @@
 Gemfile.lock
 **/vendor/bundle
 
+# Python
+__pycache__/
+*.py[cod]
+
 # Node.js and NPM
 node_modules
 npm-debug.log*
