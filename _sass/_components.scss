@@ -481,6 +481,46 @@
   background: var(--paper-sunk);
 }
 .gallery__item--tall { grid-row: span 2; }
+.gallery__item video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: saturate(0.95);
+}
+
+/* A play marker, so a video tile is not mistaken for a still. */
+.gallery__play {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 50%;
+  background: rgba(12, 9, 6, 0.55);
+  pointer-events: none;
+  transition: opacity 0.25s var(--ease);
+}
+.gallery__play::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 54%;
+  transform: translate(-50%, -50%);
+  border-style: solid;
+  border-width: 0.3rem 0 0.3rem 0.48rem;
+  border-color: transparent transparent transparent #fdfaf5;
+}
+.gallery__item--video.is-playing .gallery__play { opacity: 0; }
+
+.gallery__link {
+  flex: none;
+  color: rgba(253, 250, 245, 0.72);
+  text-decoration: none;
+  pointer-events: auto;
+}
+.gallery__link:hover { color: #fdfaf5; }
+
 .gallery__item img {
   width: 100%;
   height: 100%;

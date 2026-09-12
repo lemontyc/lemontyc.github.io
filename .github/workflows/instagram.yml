@@ -1,0 +1,104 @@
+name: Sync Instagram
+
+# Pulls media from Instagram and commits it. GitHub Pages then rebuilds.
+#
+# Needs one repository secret:
+#   IG_ACCESS_TOKEN  a long-lived Instagram token
+#
+# And optionally:
+#   GH_PAT           a fine-grained PAT with Secrets: read+write on this
+#                    repo, so the token can refresh itself. Without it the
+#                    token dies after 60 days and you refresh it by hand.
+#
+# Setup instructions: docs/instagram.md
+
+on:
+  schedule:
+    - cron: "17 5 * * *"      # daily, early, off the hour to dodge the rush
+  workflow_dispatch:
+    inputs:
+      videos:
+        description: "Include videos and reels"
+        type: boolean
+        default: false
+      limit:
+        description: "How many posts to pull"
+        default: "24"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: instagram-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Pillow
+        run: pip install --quiet Pillow
+
+      - name: Sync media
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+        run: |
+          python scripts/sync_instagram.py \
+            --limit "${{ inputs.limit || '24' }}" \
+            ${{ inputs.videos && '--videos' || '' }} \
+            --prune
+
+      - name: Commit anything that changed
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Nothing changed." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Chore: Sync photos from Instagram"
+          git push
+          echo "Synced and pushed." >> "$GITHUB_STEP_SUMMARY"
+
+  # A long-lived token lasts 60 days. Refreshing resets that to 60, so a
+  # daily refresh keeps it alive indefinitely — but only if the new value
+  # can be written back, which needs a PAT.
+  refresh-token:
+    runs-on: ubuntu-latest
+    needs: sync
+    if: ${{ always() && github.event_name == 'schedule' }}
+
+    steps:
+      - name: Refresh the access token
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "No GH_PAT set, so the token cannot be written back." >> "$GITHUB_STEP_SUMMARY"
+            echo "Refresh IG_ACCESS_TOKEN by hand before it expires." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          response=$(curl -sS -G "https://graph.instagram.com/refresh_access_token" \
+            --data-urlencode "grant_type=ig_refresh_token" \
+            --data-urlencode "access_token=$IG_ACCESS_TOKEN")
+
+          token=$(echo "$response" | python3 -c "import sys,json; print(json.load(sys.stdin).get('access_token',''))")
+          days=$(echo "$response" | python3 -c "import sys,json; print(round(json.load(sys.stdin).get('expires_in',0)/86400))")
+
+          if [ -z "$token" ]; then
+            echo "Refresh failed: $response" >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
+          echo "$token" | gh secret set IG_ACCESS_TOKEN --repo "${{ github.repository }}"
+          echo "Token refreshed; good for another $days days." >> "$GITHUB_STEP_SUMMARY"

@@ -66,6 +66,8 @@ include:
 
 exclude:
   - docker          # local preview image, not part of the site
+  - scripts         # build-time tooling
+  - docs            # setup notes, not pages
   - .vscode
   - Gemfile
   - Gemfile.lock

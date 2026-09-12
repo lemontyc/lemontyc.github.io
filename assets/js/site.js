@@ -67,6 +67,38 @@
   try { roverWanted = localStorage.getItem('rover') === '1'; } catch (e) { /* no storage */ }
   if (roverWanted) window.loadRover();
 
+  /* ── Gallery videos ───────────────────────────────────────── */
+  /* preload="none" keeps them free until wanted, so nothing loads
+     until you actually point at one. */
+
+  var clips = document.querySelectorAll('.gallery__item--video');
+
+  Array.prototype.forEach.call(clips, function (tile) {
+    var video = tile.querySelector('video');
+    if (!video) return;
+
+    var play = function () {
+      tile.classList.add('is-playing');
+      var started = video.play();
+      if (started && started.catch) started.catch(function () {});
+    };
+    var stop = function () {
+      tile.classList.remove('is-playing');
+      video.pause();
+    };
+
+    tile.addEventListener('mouseenter', play);
+    tile.addEventListener('mouseleave', stop);
+    tile.addEventListener('focusin', play);
+    tile.addEventListener('focusout', stop);
+
+    /* Touch: tap toggles, since there is no hover to speak of. */
+    tile.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A') return;
+      if (video.paused) play(); else stop();
+    });
+  });
+
   /* ── Reveal on scroll ─────────────────────────────────────── */
   /* Applied from JS only, so without JavaScript everything is
      simply visible rather than stuck at opacity zero. */

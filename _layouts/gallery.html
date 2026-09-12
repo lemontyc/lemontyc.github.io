@@ -1,7 +1,16 @@
 ---
 layout: default
 ---
-{%- assign photos = site.data.photos -%}
+{%- comment -%}
+  Two sources, one grid: photos.yml is hand-picked and always comes first;
+  instagram.yml is written by the sync workflow. Either may be absent.
+{%- endcomment -%}
+{%- assign picked = site.data.photos -%}
+{%- assign synced = site.data.instagram -%}
+
+{%- assign photos = "" | split: "" -%}
+{%- if picked and picked.size > 0 %}{% assign photos = photos | concat: picked %}{% endif -%}
+{%- if synced and synced.size > 0 %}{% assign photos = photos | concat: synced %}{% endif -%}
 
 <article class="page">
   <header class="page__head wrap">
@@ -15,15 +24,39 @@ layout: default
   {%- endif %}
 
   <div class="wrap">
-    {%- if photos and photos.size > 0 %}
+    {%- if photos.size > 0 %}
     <div class="gallery">
       {%- for photo in photos %}
-      <figure class="gallery__item{% if photo.tall %} gallery__item--tall{% endif %}">
+      {%- assign is_video = false -%}
+      {%- if photo.type == "video" or photo.video %}{% assign is_video = true %}{% endif -%}
+
+      <figure class="gallery__item{% if photo.tall %} gallery__item--tall{% endif %}{% if is_video %} gallery__item--video{% endif %}">
+        {%- if is_video %}
+        {%- comment -%}
+          Muted + playsinline so it can autoplay quietly on mobile; the
+          poster carries the weight until the file is actually wanted.
+        {%- endcomment -%}
+        <video
+          {% if photo.poster %}poster="{{ photo.poster | relative_url }}"{% endif %}
+          preload="none"
+          muted loop playsinline
+          aria-label="{{ photo.alt | default: 'A short video' }}">
+          <source src="{{ photo.video | default: photo.src | relative_url }}" type="video/mp4">
+        </video>
+        <span class="gallery__play" aria-hidden="true"></span>
+        {%- else %}
         <img src="{{ photo.src | relative_url }}" alt="{{ photo.alt }}" loading="lazy" decoding="async">
-        {%- if photo.caption or photo.year %}
+        {%- endif %}
+
+        {%- if photo.caption or photo.year or photo.permalink %}
         <figcaption>
           {%- if photo.caption %}<span class="gallery__caption">{{ photo.caption }}</span>{% endif %}
-          {%- if photo.year %}<span class="gallery__year">{{ photo.year }}</span>{% endif %}
+          {%- if photo.permalink %}
+          <a class="gallery__link" href="{{ photo.permalink }}" rel="noopener"
+             aria-label="See this on Instagram">{{ photo.year }} &nearr;</a>
+          {%- elsif photo.year %}
+          <span class="gallery__year">{{ photo.year }}</span>
+          {%- endif %}
         </figcaption>
         {%- endif %}
       </figure>
