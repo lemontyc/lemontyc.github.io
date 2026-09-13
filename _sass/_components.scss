@@ -551,9 +551,11 @@
 .gallery__item:focus-within figcaption { opacity: 1; }
 .gallery__year { color: rgba(253, 250, 245, 0.65); flex: none; }
 
-/* Empty states ----------------------------------------------- */
+/* Pointing elsewhere -------------------------------------------
+   Used on /photos/: the whole message when the grid is empty, a quiet
+   footnote when it is not. */
 
-.empty {
+.elsewhere-card {
   border: 1px dashed var(--rule);
   border-radius: var(--radius);
   padding: clamp(2.5rem, 8vw, 4.5rem) var(--gutter);
@@ -561,23 +563,48 @@
   margin-bottom: clamp(3rem, 8vw, 5rem);
   background: var(--paper-card);
 }
-.empty__art {
+
+/* Once there are photographs, this stops being the point. */
+.elsewhere-card--quiet {
+  border: 0;
+  border-top: 1px solid var(--rule-soft);
+  border-radius: 0;
+  background: none;
+  padding: clamp(1.75rem, 5vw, 2.5rem) 0 0;
+  margin-top: clamp(1rem, 4vw, 2rem);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  text-align: left;
+}
+
+.elsewhere-card__art {
   font-family: var(--font-mono);
   color: var(--ink-faint);
   font-size: var(--step-2);
   margin-bottom: 1rem;
 }
-.empty__title {
+
+.elsewhere-card__title {
   font-family: var(--font-display);
   font-variation-settings: "SOFT" 40, "WONK" 1;
   font-size: var(--step-1);
   margin-bottom: 0.5rem;
 }
-.empty__note {
+
+.elsewhere-card__note {
   color: var(--ink-soft);
   font-size: var(--step--1);
-  margin: 0;
+  margin: 0 auto;
+  max-width: 44ch;
+  line-height: 1.6;
 }
+.elsewhere-card--quiet .elsewhere-card__note { margin: 0; }
+
+.elsewhere-card__action { margin: 1.5rem 0 0; }
+.elsewhere-card--quiet .elsewhere-card__action { margin: 0; }
 
 /* Footer ----------------------------------------------------- */
 

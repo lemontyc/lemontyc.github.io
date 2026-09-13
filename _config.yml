@@ -18,6 +18,7 @@ author:
   # Shown under your name on the homepage and in the footer.
   bio            : "Robotics engineer. Sometime photographer. Currently building web tools for robots, which is precisely the thing I swore I would never do."
   location       : "Somewhere in the vast world"   # ← swap for a real place when you feel like it
+  instagram      : "montoyawanders"                # handle only; the /photos/ page links to it
   avatar         : # e.g. "/assets/images/me.jpg" — drop a photo in and it appears on the homepage
 
 # Links shown in the footer under "Elsewhere".
@@ -27,10 +28,10 @@ elsewhere:
     url  : "https://github.com/lemontyc"
   - name : "LinkedIn"
     url  : "https://www.linkedin.com/in/lemontyc/"
+  - name : "Instagram"
+    url  : "https://www.instagram.com/montoyawanders/"
   # - name : "Email"
   #   url  : "mailto:you@example.com"
-  # - name : "Instagram"
-  #   url  : "https://instagram.com/"
 
 # Build
 permalink        : /:categories/:title/      # unchanged — old links still work
@@ -66,8 +67,6 @@ include:
 
 exclude:
   - docker          # local preview image, not part of the site
-  - scripts         # build-time tooling
-  - docs            # setup notes, not pages
   - .vscode
   - Gemfile
   - Gemfile.lock

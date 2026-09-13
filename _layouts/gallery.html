@@ -1,16 +1,14 @@
 ---
 layout: default
 ---
+{%- assign photos = site.data.photos -%}
 {%- comment -%}
-  Two sources, one grid: photos.yml is hand-picked and always comes first;
-  instagram.yml is written by the sync workflow. Either may be absent.
+  One boolean, used everywhere below. A data file holding nothing but
+  comments reads back as neither a list nor nil, so test it once and
+  trust the answer rather than comparing against nil in three places.
 {%- endcomment -%}
-{%- assign picked = site.data.photos -%}
-{%- assign synced = site.data.instagram -%}
-
-{%- assign photos = "" | split: "" -%}
-{%- if picked and picked.size > 0 %}{% assign photos = photos | concat: picked %}{% endif -%}
-{%- if synced and synced.size > 0 %}{% assign photos = photos | concat: synced %}{% endif -%}
+{%- assign has_photos = false -%}
+{%- if photos and photos.size > 0 %}{% assign has_photos = true %}{% endif -%}
 
 <article class="page">
   <header class="page__head wrap">
@@ -24,7 +22,7 @@ layout: default
   {%- endif %}
 
   <div class="wrap">
-    {%- if photos.size > 0 %}
+    {%- if has_photos %}
     <div class="gallery">
       {%- for photo in photos %}
       {%- assign is_video = false -%}
@@ -33,8 +31,8 @@ layout: default
       <figure class="gallery__item{% if photo.tall %} gallery__item--tall{% endif %}{% if is_video %} gallery__item--video{% endif %}">
         {%- if is_video %}
         {%- comment -%}
-          Muted + playsinline so it can autoplay quietly on mobile; the
-          poster carries the weight until the file is actually wanted.
+          Muted + playsinline so it can play quietly on a phone; the poster
+          carries the weight until the file is actually wanted.
         {%- endcomment -%}
         <video
           {% if photo.poster %}poster="{{ photo.poster | relative_url }}"{% endif %}
@@ -48,29 +46,39 @@ layout: default
         <img src="{{ photo.src | relative_url }}" alt="{{ photo.alt }}" loading="lazy" decoding="async">
         {%- endif %}
 
-        {%- if photo.caption or photo.year or photo.permalink %}
+        {%- if photo.caption or photo.year %}
         <figcaption>
           {%- if photo.caption %}<span class="gallery__caption">{{ photo.caption }}</span>{% endif %}
-          {%- if photo.permalink %}
-          <a class="gallery__link" href="{{ photo.permalink }}" rel="noopener"
-             aria-label="See this on Instagram">{{ photo.year }} &nearr;</a>
-          {%- elsif photo.year %}
-          <span class="gallery__year">{{ photo.year }}</span>
-          {%- endif %}
+          {%- if photo.year %}<span class="gallery__year">{{ photo.year }}</span>{% endif %}
         </figcaption>
         {%- endif %}
       </figure>
       {%- endfor %}
     </div>
-    {%- else %}
-    <div class="empty">
-      <p class="empty__art" aria-hidden="true">[ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]</p>
-      <p class="empty__title">No photos here yet.</p>
-      <p class="empty__note">
-        The memory cards are full. The willpower to sit down and cull them is not.<br>
-        Check back — or nudge me about it.
+    {%- endif %}
+
+    {%- comment -%}
+      Where the work actually lives, for now. Shown either way: as the whole
+      point when the grid is empty, and as a footnote when it is not.
+    {%- endcomment -%}
+    {%- if site.author.instagram %}
+    <aside class="elsewhere-card{% if has_photos %} elsewhere-card--quiet{% endif %}">
+      {%- if has_photos == false %}
+      <p class="elsewhere-card__art" aria-hidden="true">[ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]</p>
+      <p class="elsewhere-card__title">Nothing framed here yet.</p>
+      <p class="elsewhere-card__note">
+        The memory cards are full; the willpower to sit down and cull them is not.
+        Until that changes, the photographs live on Instagram.
       </p>
-    </div>
+      {%- else %}
+      <p class="elsewhere-card__note">More of it, and more often, over on Instagram.</p>
+      {%- endif %}
+      <p class="elsewhere-card__action">
+        <a class="btn" href="https://www.instagram.com/{{ site.author.instagram }}/" rel="me noopener">
+          @{{ site.author.instagram }} &nearr;
+        </a>
+      </p>
+    </aside>
     {%- endif %}
   </div>
 </article>

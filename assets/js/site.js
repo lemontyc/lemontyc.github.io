@@ -107,7 +107,7 @@
 
   var targets = document.querySelectorAll(
     '.post-item, .stats__item, .section__head, .year__label, ' +
-    '.gallery__item, .post-nav__link, .pullquote, .empty'
+    '.gallery__item, .post-nav__link, .pullquote, .elsewhere-card'
   );
   if (!targets.length) return;
 
